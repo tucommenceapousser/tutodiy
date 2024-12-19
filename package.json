@@ -1,0 +1,21 @@
+{
+  "name": "diy-tutorials",
+  "version": "1.0.0",
+  "description": "Application web pour proposer des tutoriels DIY.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "openai": "^3.2.1",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": ["DIY", "tutorials", "nodejs", "GPT-4"],
+  "author": "trhacknon",
+  "license": "MIT"
+}
