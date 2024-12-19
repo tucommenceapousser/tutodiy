@@ -2,13 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { Configuration, OpenAIApi } = require("openai");
 require("dotenv").config();
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// Configuration GPT-4 et DALL-E
+// Configuration GPT-4
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -22,70 +24,60 @@ app.get("/", (req, res) => {
         id: 1,
         title: "Fabriquer un électro-aimant DIY",
         description: "Un projet simple pour expulser une tige de fer.",
+        link: "https://fr.wikihow.com/fabriquer-un-%C3%A9lectroaimant"
       },
     ],
   });
 });
 
-// Fonction utilitaire pour limiter les appels API
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+// Fonction de scraping de la page WikiHow
+async function scrapeTutorial(url) {
+  try {
+    const { data } = await axios.get(url);  // Récupérer le HTML de la page
+    const $ = cheerio.load(data);  // Charger le HTML avec Cheerio
 
-// Générer des images pour les étapes
-async function generateImages(steps) {
-  const images = [];
-  for (const step of steps) {
-    try {
-      const response = await openai.createImage({
-        prompt: `Illustration DIY réaliste : ${step}`,
-        n: 1,
-        size: "512x512",
-      });
-      images.push(response.data.data[0].url); // URL de l'image générée
-    } catch (error) {
-      console.error(
-        "Erreur lors de la génération de l'image :",
-        error.response?.data || error.message
-      );
-      images.push("/images/placeholder.png"); // Image par défaut en cas d'échec
-    }
-    await sleep(2000); // Pause de 2 secondes entre chaque requête
+    // Extraire les étapes du tutoriel
+    const steps = [];
+    $(".step").each((index, element) => {
+      steps.push($(element).text().trim());
+    });
+
+    // Extraire les images
+    const images = [];
+    $(".step img").each((index, element) => {
+      const imageUrl = $(element).attr("src");
+      if (imageUrl) {
+        images.push(imageUrl.startsWith("http") ? imageUrl : `https:${imageUrl}`);
+      }
+    });
+
+    return { steps, images };
+  } catch (error) {
+    console.error("Erreur lors du scraping :", error);
+    return { steps: [], images: [] };  // Retourner des tableaux vides en cas d'erreur
   }
-  return images;
 }
 
-// Page d'un tutoriel
+// Page d'un tutoriel (scraping de la page)
 app.get("/tutorial/:id", async (req, res) => {
-  const tutorials = {
+  const tutorial = {
     1: {
       title: "Fabriquer un électro-aimant DIY",
-      description: "Utilisez une alimentation d'ancien téléphone pour créer un électro-aimant.",
-      steps: [
-        "Récupérez une alimentation de téléphone (5-12V).",
-        "Prenez un tube en plastique ou PVC d’environ 10 cm.",
-        "Enroulez du fil de cuivre isolé autour du tube (200-300 tours).",
-        "Insérez une tige de fer ou un clou dans le tube.",
-        "Connectez les extrémités du fil à l'alimentation.",
-        "Quand le courant passe, la tige est expulsée du tube.",
-      ],
-    },
+      link: "https://fr.wikihow.com/fabriquer-un-%C3%A9lectroaimant"
+    }
   };
 
-  const tutorial = tutorials[req.params.id];
-  if (!tutorial) {
+  const tutorialData = tutorial[req.params.id];
+  if (!tutorialData) {
     return res.status(404).send("Tutoriel introuvable.");
   }
 
-  // Génération des images pour les étapes
-  try {
-    const images = await generateImages(tutorial.steps);
-    tutorial.images = images;
-    res.render("tutorial", tutorial);
-  } catch (error) {
-    console.error("Erreur lors du rendu du tutoriel :", error);
-    res.status(500).send("Erreur interne du serveur.");
-  }
+  // Scraper les étapes et les images
+  const { steps, images } = await scrapeTutorial(tutorialData.link);
+  tutorialData.steps = steps;
+  tutorialData.images = images;
+
+  res.render("tutorial", tutorialData);
 });
 
 // GPT-4 Interactivité
