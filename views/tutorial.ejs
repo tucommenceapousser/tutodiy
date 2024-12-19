@@ -4,21 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1><%= title %></h1>
-  <p><%= description %></p>
-  <ol>
-    <% steps.forEach((step, index) => { %>
-      <li>
-        <p><%= step %></p>
-        <% if (images[index]) { %>
-          <img src="<%= images[index] %>" alt="Étape <%= index + 1 %>" style="max-width: 300px;">
-        <% } else { %>
-          <p>(Image non disponible)</p>
-        <% } %>
-      </li>
-    <% }); %>
-  </ol>
+  <header>
+    <h1><%= title %></h1>
+  </header>
+  <main>
+    <p><%= description %></p>
+    <ol>
+      <% steps.forEach((step, index) => { %>
+        <li>
+          <p><%= step %></p>
+          <% if (images[index]) { %>
+            <img src="<%= images[index] %>" alt="Étape <%= index + 1 %>">
+          <% } else { %>
+            <p>(Image non disponible)</p>
+          <% } %>
+        </li>
+      <% }); %>
+    </ol>
+  </main>
+  <footer>
+    <p>trhacknon - 2024</p>
+  </footer>
 </body>
 </html>
