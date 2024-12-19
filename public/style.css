@@ -1,43 +1,113 @@
+/* Définir un fond sombre et des couleurs contrastées */
 body {
-  background-color: #121212;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #121212;  /* Fond sombre */
+  color: #f0f0f0;  /* Texte clair pour contraster avec le fond sombre */
   margin: 0;
   padding: 0;
 }
+
 header {
-  background-color: #1f1f1f;
-  padding: 10px 20px;
+  background-color: #1e1e1e;
+  padding: 20px;
   text-align: center;
+  border-bottom: 2px solid #ff00ff;  /* Bordure fluo */
 }
+
 header h1 {
-  color: #00ff7f;
+  color: #00ff00;  /* Titre en vert fluo */
+  font-size: 2.5rem;
 }
-ol {
-  padding-left: 20px;
+
+header p {
+  color: #ffcc00;  /* Description en jaune fluo */
+  font-size: 1.2rem;
 }
-li {
-  margin-bottom: 15px;
-}
-img {
-  border: 2px solid #00ff7f;
+
+section {
+  padding: 20px;
+  margin: 20px;
   border-radius: 8px;
-  max-width: 100%;
-  height: auto;
+  background-color: #2c2c2c;  /* Fond gris foncé */
 }
-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #888888;
+
+h2 {
+  color: #ff00ff;  /* Titre des sections en magenta fluo */
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid #ff00ff;  /* Bordure sous le titre */
+  padding-bottom: 10px;
 }
-button {
-  background-color: #00ff7f;
-  border: none;
-  color: #121212;
-  padding: 10px 20px;
-  cursor: pointer;
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tutorial-step {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #444;  /* Bordure discrète autour des étapes */
   border-radius: 5px;
+  background-color: #333;
 }
-button:hover {
-  background-color: #00cc66;
+
+.tutorial-step p {
+  color: #f0f0f0;  /* Texte clair pour chaque étape */
+  font-size: 1.1rem;
+}
+
+.tutorial-step img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Style du formulaire de question */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+form input[type="text"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #ff00ff;  /* Bordure fluo autour du champ de texte */
+  background-color: #333;
+  color: #f0f0f0;
+  font-size: 1rem;
+  border-radius: 5px;
+  width: 80%;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #00ff00;  /* Bouton vert fluo */
+  color: #121212;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #ff00ff;  /* Changer en magenta fluo lors du survol */
+}
+
+form input[type="text"]:focus {
+  outline: none;
+  border-color: #ff00ff;  /* Bordure fluo sur le champ de texte au focus */
+}
+
+a {
+  color: #ffcc00;  /* Lien en jaune fluo */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #ff00ff;  /* Changer couleur au survol */
 }
