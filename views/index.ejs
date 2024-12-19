@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIY Tutorials</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Tutoriels DIY</h1>
+  <ul>
+    <% tutorials.forEach(tutorial => { %>
+      <li>
+        <a href="/tutorial/<%= tutorial.id %>">
+          <h2><%= tutorial.title %></h2>
+          <p><%= tutorial.description %></p>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+  <form id="askForm">
+    <label>Poser une question :</label>
+    <input type="text" id="question" name="question" placeholder="Ex: Comment connecter l'alimentation ?">
+    <button type="submit">Envoyer</button>
+  </form>
+  <div id="response"></div>
+  <script src="/script.js"></script>
+</body>
+</html>
