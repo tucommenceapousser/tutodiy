@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"  // Script pour développement
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -15,11 +15,11 @@
     "dotenv": "^16.0.3",
     "compression": "^1.7.4",
     "helmet": "^7.0.0",
-    "cors": "^2.8.5",  // CORS pour gérer les problèmes de cross-origin
-    "cheerio": "^1.0.0-rc.12"  // Ajout de Cheerio pour le scraping HTML
+    "cors": "^2.8.5",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"  // Utilitaire pour le redémarrage automatique du serveur
+    "nodemon": "^2.0.22"
   },
   "engines": {
     "node": ">=16.0.0"
