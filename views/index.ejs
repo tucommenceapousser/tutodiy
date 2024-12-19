@@ -3,26 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tutoriels DIY</title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <header>
-    <h1>Tutoriels DIY - trhacknon</h1>
+    <h1><%= title %></h1>
+    <p><%= description %></p>
   </header>
-  <main>
-    <h2>Liste des tutoriels</h2>
+
+  <section>
+    <h2>Étapes :</h2>
     <ul>
-      <% tutorials.forEach(tutorial => { %>
-        <li>
-          <a href="/tutorial/<%= tutorial.id %>"><%= tutorial.title %></a>
-          <p><%= tutorial.description %></p>
+      <% steps.forEach((step, index) => { %>
+        <li class="tutorial-step">
+          <p><%= step %></p>
+          <% if (images[index]) { %>
+            <img src="<%= images[index] %>" alt="Étape <%= index + 1 %>">
+          <% } %>
         </li>
-      <% }); %>
+      <% }) %>
     </ul>
-  </main>
-  <footer>
-    <p>trhacknon - 2024</p>
-  </footer>
+  </section>
+
+  <section>
+    <h2>Questions :</h2>
+    <form action="/ask" method="POST">
+      <input type="text" name="question" placeholder="Posez votre question..." required>
+      <button type="submit">Envoyer</button>
+    </form>
+  </section>
 </body>
 </html>
