@@ -9,24 +9,29 @@
 <body>
   <header>
     <h1><%= title %></h1>
-  </header>
-  <main>
     <p><%= description %></p>
-    <ol>
+  </header>
+
+  <section>
+    <h2>Étapes :</h2>
+    <ul>
       <% steps.forEach((step, index) => { %>
-        <li>
+        <li class="tutorial-step">
           <p><%= step %></p>
           <% if (images[index]) { %>
             <img src="<%= images[index] %>" alt="Étape <%= index + 1 %>">
-          <% } else { %>
-            <p>(Image non disponible)</p>
           <% } %>
         </li>
-      <% }); %>
-    </ol>
-  </main>
-  <footer>
-    <p>trhacknon - 2024</p>
-  </footer>
+      <% }) %>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Questions :</h2>
+    <form action="/ask" method="POST">
+      <input type="text" name="question" placeholder="Posez votre question..." required>
+      <button type="submit">Envoyer</button>
+    </form>
+  </section>
 </body>
 </html>
