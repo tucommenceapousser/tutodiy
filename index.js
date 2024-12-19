@@ -8,7 +8,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// Configuration GPT-4
+// Configuration GPT-4 et DALL-E
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -23,8 +23,27 @@ app.get("/", (req, res) => {
   });
 });
 
+// Générer des images pour les étapes
+async function generateImages(steps) {
+  const images = [];
+  for (const step of steps) {
+    try {
+      const response = await openai.createImage({
+        prompt: `Illustration DIY : ${step}`,
+        n: 1,
+        size: "512x512",
+      });
+      images.push(response.data.data[0].url); // URL de l'image générée
+    } catch (error) {
+      console.error("Erreur lors de la génération de l'image :", error);
+      images.push(null); // Ajouter un placeholder en cas d'erreur
+    }
+  }
+  return images;
+}
+
 // Page d'un tutoriel
-app.get("/tutorial/:id", (req, res) => {
+app.get("/tutorial/:id", async (req, res) => {
   const tutorials = {
     1: {
       title: "Fabriquer un électro-aimant DIY",
@@ -39,7 +58,17 @@ app.get("/tutorial/:id", (req, res) => {
       ],
     },
   };
-  res.render("tutorial", tutorials[req.params.id]);
+
+  const tutorial = tutorials[req.params.id];
+  if (!tutorial) {
+    return res.status(404).send("Tutoriel introuvable.");
+  }
+
+  // Génération des images pour les étapes
+  const images = await generateImages(tutorial.steps);
+  tutorial.images = images;
+
+  res.render("tutorial", tutorial);
 });
 
 // GPT-4 Interactivité
